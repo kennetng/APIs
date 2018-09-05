@@ -20,6 +20,12 @@ def findARestaurant(mealType,location):
 	h = httplib2.Http()
 	result = json.loads(h.request(url,'GET')[1])
 
+	#If we don't have any hit we return nothing
+	if not result['response']['venues']:
+		print 'Target location: ' + location
+		print 'Meal type: ' + mealType
+		print 'Nearest resturant: ' + "No available resturant"		
+		return "No available resturant"
 	#Find the first resturant
 	firstResturant = result['response']['venues'][0]
 	
@@ -37,15 +43,30 @@ def findARestaurant(mealType,location):
 		#If there is no picture, use a default picture.
 		url_picture = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Tom%27s_Restaurant%2C_NYC.jpg/1200px-Tom%27s_Restaurant%2C_NYC.jpg'
 	
-	return 
-	#7. Return a dictionary containing the restaurant name, address, and image url	
+	#Get the address 
+	restaurant_formattedAddress = firstResturant['location']['formattedAddress']
+	restaurant_address = ''
+	for address in restaurant_formattedAddress:
+		restaurant_address += ' ' + address
+	#Get the name
+	restaurant_name = firstResturant['name']
+
+	print 'Target location: ' + location
+	print 'Meal type: ' + mealType
+	print 'Nearest resturant: ' + restaurant_name
+	print 'Address: ' + restaurant_address
+	print 'Image: ' + url_picture
+	print ' '
+	restaurantInfo = {'name':restaurant_name, 'address':restaurant_address, 'image':url_picture}
+
+	return restaurantInfo	
 if __name__ == '__main__':
-	#findARestaurant("Pizza", "Tokyo, Japan")
-	#findARestaurant("Tacos", "Jakarta, Indonesia")
-	#findARestaurant("Tapas", "Maputo, Mozambique")
-	#findARestaurant("Falafel", "Cairo, Egypt")
-	#findARestaurant("Spaghetti", "New Delhi, India")
-	#findARestaurant("Cappuccino", "Geneva, Switzerland")
+	findARestaurant("Pizza", "Tokyo, Japan")
+	findARestaurant("Tacos", "Jakarta, Indonesia")
+	findARestaurant("Tapas", "Maputo, Mozambique")
+	findARestaurant("Falafel", "Cairo, Egypt")
+	findARestaurant("Spaghetti", "New Delhi, India")
+	findARestaurant("Cappuccino", "Geneva, Switzerland")
 	findARestaurant("Sushi", "Los Angeles, California")
-	#findARestaurant("Steak", "La Paz, Bolivia")
-	#findARestaurant("Gyros", "Sydney Australia")
+	findARestaurant("Steak", "La Paz, Bolivia")
+	findARestaurant("Gyros", "Sydney Australia")

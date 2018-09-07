@@ -14,7 +14,6 @@ class Puppy(Base):
     #Add add a decorator property to serialize data from the database
 	@property
 	def serialize(self):
-		print "HEI"
 		return {
 		   	'id': self.id,
 		    'name': self.name,
